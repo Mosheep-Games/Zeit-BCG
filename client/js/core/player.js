@@ -25,9 +25,6 @@ game.player = {
             var p = game.player.picks.indexOf(card.data('hero'));
             card.addClass('player').on('mousedown touchstart', game.card.select);
             card.place(game.map.toPosition(x + p, y));
-            // Spawn hero in engine
-            if(window.HeroSystem) HeroSystem.spawnHero(card.data('hero'), {x:x+p, y:y});
-
             if (game.mode == 'tutorial')
               card.on('select', game.tutorial.selected);
           });

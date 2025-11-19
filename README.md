@@ -1,253 +1,53 @@
-# Zeit — Edição Modernizada (Engine, Gameplay, Render & Hero System)
+# [Fight Over Dat Ancient][1]
 
-Este projeto é uma versão **modernizada e reestruturada** do jogo **Zeit**, originalmente construído em JavaScript.
-A modernização introduz:
+[![FODA icon](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/campaign/ico_rosh.png)][1]
+[![FODA rating](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/ratingsymbol_e10.png)][9]
 
-* Nova **mini-engine de renderização**
-* Game loop desacoplado
-* Sistema de **entidades**
-* Sistema modular de **Heróis e Habilidades**
-* Código mais organizado e expansível
-* Melhor desempenho (culling, object factories, sub-stepping)
+A **card game** with magical heroes, each with unique skills and powerful abilities.
 
-Este README documenta **todos os sistemas**, a arquitetura atual e como trabalhar com o motor modernizado.
+Play for free [online in your browser][1] on our [heroku](https://heroku.com) servers.
 
----
+Join our community and discuss the game rules at our [Discord Server][2]. 
 
-# 🚀 1. Estrutura Geral do Projeto
+[![Discord Chat Channel](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/discord.png)][2]
 
-```
-Zeit/
- ├─ client/
- │   ├─ css/
- │   ├─ img/
- │   ├─ js/
- │   │   ├─ core/
- │   │   ├─ factories/
- │   │   ├─ render/
- │   │   ├─ game.js
- │   │   ├─ init_hero_system.js
- │   │   └─ movement.js
- │   ├─ json/
- │   │   ├─ heroes.json
- │   │   └─ skills.json
- ├─ server/
- └─ README.md
-```
+Feel free to [fork][3] or [download][4] and help build the game!
+You can even [make a new hero][6]
 
----
+Visit our [Wiki page][7] where you can learn how to hack this project, how to play with real cards and much more.
 
-# 🧩 2. Engine Modernizada
+All [artwork][5] can be downloaded for free in high resolution. 
 
-## 2.1 Game Loop (client/js/game.js)
+Please report any [suggestions, bugs or issues][8] here at github.
 
-O game loop foi reescrito para:
+[![Fight Over Dat Ancient](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/banner.jpg)][1]
 
-* atualizar entidades
-* atualizar movimento
-* renderizar a cena
-* desacoplar lógica e renderização
+Special thanks to:
 
-### **Exemplo do novo game loop:**
+ - [Dopatwo](https://www.youtube.com/user/dopatwo) for the artwork 
+ - [Kevin MacLeod](https://www.youtube.com/user/kmmusic) for the soundtrack
+ - [Skylent](https://www.youtube.com/dotacardchannel) for the introduction videos
 
-```js
-export function startGame(world, ctx) {
-  let last = performance.now();
+*Powered by*
 
-  function loop(now){
-    const dt = (now - last)/1000;
-    last = now;
+[![Powered by Github, Heroku, Grunt and Jquery](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/poweredby-banner.jpg)][1]
 
-    // Atualiza entidades (players, heróis, projéteis etc.)
-    for (const e of world.entities){
-      if (e.controller)
-        updateMovement(e, e.controller.input, dt);
-    }
+[1]: hhttps://foda-dotacard.glitch.me/debug.html
 
-    renderFrame(ctx, world, world.camera);
-    requestAnimationFrame(loop);
-  }
-
-  requestAnimationFrame(loop);
-}
-```
+[2]: https://discord.gg/a4TwjAR
 
----
+[3]: https://github.com/rafaelcastrocouto/foda/fork
 
-## 2.2 Render System (client/js/render.js)
+[4]: https://github.com/rafaelcastrocouto/foda/archive/master.zip
 
-O renderizador foi modernizado:
+[5]: https://github.com/rafaelcastrocouto/dotacard
 
-* limpeza da tela
-* culling automático (desenha só o que aparece na tela)
-* suporte a layers
+[6]: https://github.com/rafaelcastrocouto/dotacard/wiki/How-to-develop-a-new-hero
 
-### **Exemplo:**
+[7]: https://github.com/rafaelcastrocouto/dotacard/wiki
 
-```js
-export function renderFrame(ctx, world, camera) {
-  ctx.save();
-  ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
+[8]: https://github.com/rafaelcastrocouto/foda/issues/new
 
-  const visible = world.entities.filter(e => 
-    Math.abs(e.x - camera.x) < camera.w &&
-    Math.abs(e.y - camera.y) < camera.h
-  );
+[9]: http://www.esrb.org/ratings/ratings_guide.aspx#rating_categories
 
-  renderEntities(ctx, visible, camera);
-  ctx.restore();
-}
-```
-
----
-
-# 🦸 3. Sistema de Heróis (HeroFactory)
-
-O novo sistema permite criar heróis a partir de arquivos JSON, fácil de estender e ideal para jogos com muitos personagens.
-
-## 3.1 Estrutura do heroes.json
-
-`client/json/heroes.json`
-
-```json
-{
-  "axe": {
-    "name": "Axe",
-    "hp": 120,
-    "speed": 110,
-    "abilities": ["axe_attack", "enrage"]
-  }
-}
-```
-
----
-
-## 3.2 Criando heróis (client/js/factories/HeroFactory.js)
-
-```js
-const hero = {
-  id,
-  name: data.name,
-  hp: data.hp,
-  speed: data.speed,
-  abilities: []
-};
-```
-
-### Criando um herói:
-
-```js
-const hero = HeroFactory.create("axe");
-await HeroFactory.attachAbilities(hero, AbilityFactory);
-```
-
----
-
-# 🌀 4. Sistema de Habilidades (AbilityFactory)
-
-Habilidades agora têm:
-
-* cooldown
-* tipo (melee, projectile, buff etc.)
-* método `canCast()`
-* método `cast()`
-* dados vindos de JSON
-
-## 4.1 Estrutura do skills.json
-
-```json
-{
-  "axe": {
-    "axe_attack": {
-      "name": "Axe Swing",
-      "cooldown": 1.1,
-      "power": 30,
-      "type": "melee"
-    }
-  }
-}
-```
-
----
-
-## 4.2 Criando habilidades
-
-```js
-const abl = AbilityFactory.create("axe_attack", { owner: hero });
-```
-
----
-
-## 4.3 Comportamentos nativos
-
-### Ataque melee:
-
-```js
-world.dealAreaDamage(owner.x, owner.y, this.data.range || 40, this.power, owner);
-```
-
-### Projéteis:
-
-```js
-world.spawnProjectile({
-  x: owner.x,
-  y: owner.y,
-  dir: owner.dir,
-  speed: this.data.speed,
-  power: this.power
-});
-```
-
----
-
-# 🎮 5. Integrando com o Sistema Original do Jogo
-
-Heróis agora são criados automaticamente quando um card é colocado no tabuleiro:
-
-```js
-if(window.HeroSystem)
-    HeroSystem.spawnHero(card.data('hero'), {x:x+p, y:y});
-```
-
-Isso permite que:
-
-* O herói apareça visualmente como antes
-* Mas também seja criado internamente como uma entidade real
-* Com habilidades, vida, velocidade e lógica própria
-* Compatível com o engine modernizado
-
----
-
-# 🔥 6. Exemplo Completo: Criando um Herói no Jogo
-
-```js
-await HeroSystem.load();
-
-const axe = await HeroSystem.spawnHero("axe", {
-  x: 150,
-  y: 300
-});
-
-console.log(axe.name); // "Axe"
-console.log(axe.abilities); // lista de abilities convertidas
-```
-
----
-
-# 🛠 7. Próximos Passos
-
-O motor está pronto para evolução. Recomendações:
-
-* Criar `world.spawnProjectile()`
-* Criar `world.dealAreaDamage()`
-* IA para inimigos usando AbilityFactory
-* Novos heróis e subclasses
-* UI para lançar habilidades
-* UI de cooldowns e barras de HP
-
----
-
-# 📄 8. Licença
-
-Projeto modificado para fins de aprendizado, evolução e documentação.
-Consulte a licença original do Zeit para uso comercial ou redistribuição.
+[10]: https://github.com/rafaelcastrocouto/dotacard/wiki/How-to-setup-a-local-server
