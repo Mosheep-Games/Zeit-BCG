@@ -1,53 +1,62 @@
-# [Fight Over Dat Ancient][1]
+# ZEIT — README UNIFICADO
 
-[![FODA icon](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/campaign/ico_rosh.png)][1]
-[![FODA rating](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/ratingsymbol_e10.png)][9]
 
-A **card game** with magical heroes, each with unique skills and powerful abilities.
+# Zeit Modernizado — Gameplay + Heroes + Skills
 
-Play for free [online in your browser][1] on our [heroku](https://heroku.com) servers.
+Este pacote inclui:
 
-Join our community and discuss the game rules at our [Discord Server][2]. 
+## ✔ Novo GameWorld (engine de gameplay)
+Gerencia:
+- entidades
+- projéteis
+- efeitos AOE
+- atualização por frame
 
-[![Discord Chat Channel](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/discord.png)][2]
+## ✔ Novo HeroSystem
+Agora heróis são entidades vivas:
+- têm posição
+- atacam automaticamente
+- podem lançar habilidades
+- podem receber dano
 
-Feel free to [fork][3] or [download][4] and help build the game!
-You can even [make a new hero][6]
+## ✔ Integration com AbilityFactory e HeroFactory
+- Skills agora usam projectiles e AOE reais
+- HeroFactory cria heróis com atributos modernos
+- GameWorld executa o gameplay
 
-Visit our [Wiki page][7] where you can learn how to hack this project, how to play with real cards and much more.
+## ✔ Loop principal atualizado
+`GameWorld.update(dt)` agora roda a cada frame, permitindo combates reais.
 
-All [artwork][5] can be downloaded for free in high resolution. 
+## Como funciona o jogo agora
 
-Please report any [suggestions, bugs or issues][8] here at github.
+### 1. Spawn de heróis
+```js
+HeroSystem.spawnHero("chronos", {x:4, y:6});
+```
 
-[![Fight Over Dat Ancient](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/banner.jpg)][1]
+### 2. Ataques
+Quando há um inimigo próximo:
+- calcula distância
+- chama `hero.attack()`
 
-Special thanks to:
+### 3. Skills
+```js
+hero.skills[0].cast(hero, target, GameWorld);
+```
 
- - [Dopatwo](https://www.youtube.com/user/dopatwo) for the artwork 
- - [Kevin MacLeod](https://www.youtube.com/user/kmmusic) for the soundtrack
- - [Skylent](https://www.youtube.com/dotacardchannel) for the introduction videos
+### 4. Projetéis
+Um projétil é criado e movido até o alvo
 
-*Powered by*
+### 5. Efeitos de área
+Criam slow, stun, dano periódico etc.
 
-[![Powered by Github, Heroku, Grunt and Jquery](https://raw.githubusercontent.com/rafaelcastrocouto/dotacard/artwork/img/poweredby-banner.jpg)][1]
+---
 
-[1]: hhttps://foda-dotacard.glitch.me/debug.html
+Tudo isso está integrado ao seu projeto original!
 
-[2]: https://discord.gg/a4TwjAR
 
-[3]: https://github.com/rafaelcastrocouto/foda/fork
 
-[4]: https://github.com/rafaelcastrocouto/foda/archive/master.zip
 
-[5]: https://github.com/rafaelcastrocouto/dotacard
+## Hero & Ability System
 
-[6]: https://github.com/rafaelcastrocouto/dotacard/wiki/How-to-develop-a-new-hero
-
-[7]: https://github.com/rafaelcastrocouto/dotacard/wiki
-
-[8]: https://github.com/rafaelcastrocouto/foda/issues/new
-
-[9]: http://www.esrb.org/ratings/ratings_guide.aspx#rating_categories
-
-[10]: https://github.com/rafaelcastrocouto/dotacard/wiki/How-to-setup-a-local-server
+Added modular HeroFactory and AbilityFactory under `client/js/factories`. Use `client/js/init_hero_system.js` to bootstrap and `HeroSystem.spawnHero(id, opts)` to create heroes.
