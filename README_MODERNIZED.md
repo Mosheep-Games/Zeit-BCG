@@ -1,9 +1,5 @@
-# Zeit — Modernized Version (Level 3)
 
-This version includes a redesigned gameplay and rendering core using a lightweight ECS-like architecture.
 
-## Changes
-- New physics-like movement system
-- Frame-decoupled renderer
-- Entity culling for performance
-- Modularized engine files
+## Hero & Ability System
+
+Added modular HeroFactory and AbilityFactory under `client/js/factories`. Use `client/js/init_hero_system.js` to bootstrap and `HeroSystem.spawnHero(id, opts)` to create heroes.
