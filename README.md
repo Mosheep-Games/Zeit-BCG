@@ -424,13 +424,3 @@ for (let i=0;i<20;i++){
 
 ---
 
-## Contato e próximos passos recomendados por mim
-
-Se quiser eu posso:
-
-* Gerar patch `.diff` para integrar automaticamente ao `Zeit-master`.
-* Criar demo com HUD interativo (botões spawn, sliders para stats).
-* Implementar RenderFX com canvas particles.
-* Criar painel de tuning em tempo real (debug UI).
-
-Diga qual desses você prefere que eu faça em seguida.
