@@ -1,0 +1,97 @@
+{
+  "chronos": {
+    "name": "Chronos",
+    "class": "mage",
+    "description": "Manipulador do tempo; dano m\u00e1gico e controle.",
+    "stats": {
+      "hp": 200,
+      "maxHp": 200,
+      "mp": 140,
+      "atk": 6,
+      "ap": 12,
+      "armor": 5,
+      "resistance": 0.1,
+      "speed": 2.5,
+      "attackRange": 3,
+      "critChance": 0.05,
+      "critMultiplier": 1.6,
+      "attackSpeed": 1.0
+    },
+    "growth": {
+      "hp": 18,
+      "mp": 10,
+      "atk": 2
+    },
+    "skills": [
+      "time_blast",
+      "slow_field",
+      "time_stop"
+    ],
+    "passives": [
+      "time_regen"
+    ],
+    "maxLevel": 18
+  },
+  "brawler": {
+    "name": "Brawler",
+    "class": "warrior",
+    "description": "Tank corpo-a-corpo com alto HP e armadura.",
+    "stats": {
+      "hp": 320,
+      "maxHp": 320,
+      "mp": 40,
+      "atk": 14,
+      "ap": 2,
+      "armor": 12,
+      "resistance": 0.05,
+      "speed": 2.1,
+      "attackRange": 1.5,
+      "critChance": 0.08,
+      "critMultiplier": 1.5,
+      "attackSpeed": 0.9
+    },
+    "growth": {
+      "hp": 30,
+      "atk": 3
+    },
+    "skills": [
+      "slam",
+      "dash_bash"
+    ],
+    "passives": [
+      "tough_skin"
+    ],
+    "maxLevel": 18
+  },
+  "vigil": {
+    "name": "Vigil",
+    "class": "assassin",
+    "description": "Alta mobilidade e burst damage, fr\u00e1gil em combate prolongado.",
+    "stats": {
+      "hp": 140,
+      "maxHp": 140,
+      "mp": 80,
+      "atk": 20,
+      "ap": 4,
+      "armor": 3,
+      "resistance": 0.05,
+      "speed": 3.2,
+      "attackRange": 1.4,
+      "critChance": 0.18,
+      "critMultiplier": 2.0,
+      "attackSpeed": 1.2
+    },
+    "growth": {
+      "hp": 10,
+      "atk": 4
+    },
+    "skills": [
+      "dash_strike",
+      "smoke_bomb"
+    ],
+    "passives": [
+      "crit_focus"
+    ],
+    "maxLevel": 18
+  }
+}
