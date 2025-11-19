@@ -1,51 +1,32 @@
-
+// AbilityFactory.js - creates skill objects from SKILL_DATABASE
 window.AbilityFactory = {
-    create(id, overrides = {}) {
-        const base = SKILL_DATABASE[id];
-        if (!base) throw new Error("Skill not found: " + id);
-
-        const skill = {
-            id,
-            name: base.name,
-            description: base.description,
-            type: base.type,
-            icon: base.icon || null,
-
-            cooldown: base.cooldown,
-            manaCost: base.manaCost || 0,
-            castRange: base.castRange || 2,
-            scaling: base.scaling || {},
-
-            lastCast: 0,
-
-            canCast(hero) {
-                const now = performance.now();
-                if (now - this.lastCast < this.cooldown * 1000) return false;
-                if (hero.stats.mp < this.manaCost) return false;
-                return true;
-            },
-
-            cast(hero, target, world) {
-                if (!this.canCast(hero)) return false;
-
-                hero.stats.mp -= this.manaCost;
-                this.lastCast = performance.now();
-
-                if (base.animation)
-                    base.animation(hero);
-
-                if (base.effect)
-                    base.effect(hero, target, world);
-
-                if (base.visual)
-                    base.visual(hero, target, world);
-
-                return true;
-            },
-
-            ...overrides
-        };
-
-        return skill;
-    }
+  create(id, overrides={}) {
+    if (!window.SKILL_DATABASE) throw new Error("SKILL_DATABASE not found");
+    const base = window.SKILL_DATABASE[id];
+    if (!base) throw new Error("Skill "+id+" not in SKILL_DATABASE");
+    const skill = {
+      id,
+      name: base.name || id,
+      type: base.type || 'generic',
+      cooldown: base.cooldown || 1,
+      manaCost: base.manaCost || 0,
+      lastCast: 0,
+      canCast(owner) {
+        const now = performance.now();
+        if (now - this.lastCast < this.cooldown*1000) return false;
+        if (owner && owner.stats && owner.stats.mp < this.manaCost) return false;
+        return true;
+      },
+      cast(owner, target, world) {
+        if (!this.canCast(owner)) return false;
+        owner.stats.mp = (owner.stats.mp||0) - this.manaCost;
+        this.lastCast = performance.now();
+        if (base.effect) base.effect(owner, target, world);
+        if (base.visual && window.RenderFX) base.visual(owner, target, world);
+        return true;
+      },
+      ...overrides
+    };
+    return skill;
+  }
 };

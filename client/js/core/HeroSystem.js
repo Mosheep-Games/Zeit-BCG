@@ -1,22 +1,15 @@
-
+// HeroSystem.js - spawns heroes and hooks AI
 window.HeroSystem = {
-    spawnHero(id, pos) {
-        const hero = HeroFactory.create(id);
-        hero.position = pos;
-
-        hero.update = function(dt) {
-            const nearest = GameWorld.entities.find(e => e !== hero && !e.dead);
-            if (nearest) {
-                const dx = nearest.position.x - hero.position.x;
-                const dy = nearest.position.y - hero.position.y;
-                const dist = Math.hypot(dx, dy);
-                if (dist < 1.4) {
-                    hero.attack(nearest);
-                }
-            }
-        };
-
-        GameWorld.add(hero);
-        return hero;
-    }
+  spawnHero(key, pos) {
+    const hero = HeroFactory.create(key, {x: pos.x, y: pos.y});
+    // attach update that calls AI_Ultra
+    hero.update = function(dt) {
+      // update status effects
+      CombatSystem.updateStatus(this, dt);
+      // AI run
+      AI_Ultra.process(this, dt);
+    };
+    GameWorld.add(hero);
+    return hero;
+  }
 };
