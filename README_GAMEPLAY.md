@@ -1,0 +1,53 @@
+
+# Zeit Modernizado — Gameplay + Heroes + Skills
+
+Este pacote inclui:
+
+## ✔ Novo GameWorld (engine de gameplay)
+Gerencia:
+- entidades
+- projéteis
+- efeitos AOE
+- atualização por frame
+
+## ✔ Novo HeroSystem
+Agora heróis são entidades vivas:
+- têm posição
+- atacam automaticamente
+- podem lançar habilidades
+- podem receber dano
+
+## ✔ Integration com AbilityFactory e HeroFactory
+- Skills agora usam projectiles e AOE reais
+- HeroFactory cria heróis com atributos modernos
+- GameWorld executa o gameplay
+
+## ✔ Loop principal atualizado
+`GameWorld.update(dt)` agora roda a cada frame, permitindo combates reais.
+
+## Como funciona o jogo agora
+
+### 1. Spawn de heróis
+```js
+HeroSystem.spawnHero("chronos", {x:4, y:6});
+```
+
+### 2. Ataques
+Quando há um inimigo próximo:
+- calcula distância
+- chama `hero.attack()`
+
+### 3. Skills
+```js
+hero.skills[0].cast(hero, target, GameWorld);
+```
+
+### 4. Projetéis
+Um projétil é criado e movido até o alvo
+
+### 5. Efeitos de área
+Criam slow, stun, dano periódico etc.
+
+---
+
+Tudo isso está integrado ao seu projeto original!
