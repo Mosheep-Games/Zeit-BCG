@@ -1,3 +1,15 @@
+# ZEIT — DOCUMENTAÇÃO COMPLETA
+
+## Sumário
+- Engine & Gameplay
+- Hero System
+- Ability System
+- Combat (C2)
+- Arquitetura & Fluxos
+- Guia para Devs
+
+## Conteúdo Unificado
+
 # ZEIT — README UNIFICADO
 
 
@@ -60,3 +72,16 @@ Tudo isso está integrado ao seu projeto original!
 ## Hero & Ability System
 
 Added modular HeroFactory and AbilityFactory under `client/js/factories`. Use `client/js/init_hero_system.js` to bootstrap and `HeroSystem.spawnHero(id, opts)` to create heroes.
+
+
+## CombatSystem (C2)
+Sistema avançado de dano, status, DOT, slow, stun.
+
+## Estrutura da Engine
+- GameWorld: loop e entidades
+- HeroSystem: spawn & IA
+- CombatSystem: lógica de combate
+- AbilityFactory: habilidades e efeitos
+
+## Guia para Desenvolvedores
+Explanação de diretórios, pipelines e pontos de extensão.
