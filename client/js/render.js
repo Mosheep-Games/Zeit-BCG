@@ -1,20 +1,17 @@
-function render(ctx, assets) {
+// Modernized Render System (Level 3)
+import { renderEntities } from './render/entities.js';
+
+export function renderFrame(ctx, world, camera) {
   ctx.save();
+  ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
 
-  if (!window.__renderCache) {
-    window.__renderCache = {
-      bg: assets.bg,
-      map: assets.map
-    };
-  }
-  const cache = window.__renderCache;
+  // culling + layer system
+  const visible = world.entities.filter(e => 
+    Math.abs(e.x - camera.x) < camera.w &&
+    Math.abs(e.y - camera.y) < camera.h
+  );
 
-  ctx.drawImage(cache.bg, 0, 0);
-  ctx.drawImage(cache.map, 0, 0);
-
-  drawEntities(ctx);
-  drawProjectiles(ctx);
-  drawParticles(ctx);
+  renderEntities(ctx, visible, camera);
 
   ctx.restore();
 }

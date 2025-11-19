@@ -1,22 +1,23 @@
-function updateMovement(player, dt, keys) {
+// Modernized Movement System (Level 3)
+export function updateMovement(player, input, dt) {
   const speed = player.speed;
-  let vx = 0, vy = 0;
+  const dir = {x:0, y:0};
+  if (input.up) dir.y -= 1;
+  if (input.down) dir.y += 1;
+  if (input.left) dir.x -= 1;
+  if (input.right) dir.x += 1;
 
-  const up = keys["w"] || keys["ArrowUp"];
-  const down = keys["s"] || keys["ArrowDown"];
-  const left = keys["a"] || keys["ArrowLeft"];
-  const right = keys["d"] || keys["ArrowRight"];
+  const len = Math.hypot(dir.x, dir.y) || 1;
+  const nx = dir.x/len, ny = dir.y/len;
 
-  vy = (down - up) * speed;
-  vx = (right - left) * speed;
+  // Physics-like integration
+  player.vx = nx * speed;
+  player.vy = ny * speed;
 
-  const len = Math.hypot(vx, vy);
-  if (len > speed) {
-    const ratio = speed / len;
-    vx *= ratio;
-    vy *= ratio;
+  // Sub-stepping for smoother movement
+  const step = dt/2;
+  for (let i=0;i<2;i++){
+    player.x += player.vx * step;
+    player.y += player.vy * step;
   }
-
-  player.x = player.x + vx * dt * 0.95;
-  player.y = player.y + vy * dt * 0.95;
 }
