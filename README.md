@@ -64,7 +64,7 @@ Criam slow, stun, dano periódico etc.
 
 ---
 
-Tudo isso está integrado ao seu projeto original!
+
 
 
 
